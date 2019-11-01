@@ -20,8 +20,10 @@ def searchPokemon():
 
 @app.route('/get-database')
 def getDatabase():
-    datatable_html = models_df.to_html(index=False, escape=False).replace("NaN", "")
-    return datatable_html
+    database_json = models_df.to_json(orient="records",force_ascii=False)
+    return database_json
+    # datatable_html = models_df.to_html(index=False, escape=False).replace("NaN", "")
+    # return datatable_html
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)
