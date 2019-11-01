@@ -1,0 +1,36 @@
+version: '3'
+services:
+  reverse-proxy:
+    container_name: reverse_proxy_container
+    image: nginx:1.17
+    ports:
+      - '80:80'
+    environment:
+      TZ: Asia/Tokyo
+    volumes:
+      - './reverse_proxy/log:/var/log/nginx'
+      - './reverse_proxy/nginx.conf:/etc/nginx/nginx.conf:ro'
+    restart: always
+  
+  web:
+    container_name: web_server_container
+    image: nginx:1.17
+    environment:
+      TZ: Asia/Tokyo
+    volumes:
+      - './web/log:/var/log/nginx'
+      - './web/nginx.conf:/etc/nginx/nginx.conf:ro'
+      - './web/src:/src'
+    restart: always
+ 
+  api:
+    container_name: api_container
+    build : './api'
+    volumes:
+      - './api/app:/root/app'
+      - './api/Pipfile:/root/Pipfile'
+      - './api/Pipfile.lock:/root/Pipfile.lock'
+    environment:
+      TZ: Asia/Tokyo
+    command: pipenv run python app/main.py
+    restart: always
