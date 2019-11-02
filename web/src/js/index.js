@@ -20,49 +20,59 @@ TypeName = {
 }
 
 $(function(){
-    $('#search-button').click(function(){
+    createTableHeader();
+    $('#search-box').change(function(){
+        $("#database-table tbody").empty();
+        $("#database-table").hide();
+        $(".loader").show();
         $.ajax({
-            url: "api/search",
+            url: "api/search-database",
             dataType: "json",
-            data: {query: $("#search-box").val()},
-        }).done(function(data) {
-            console.log(data);
-        }).fail(function(){
-            alert("データベースの検索に失敗しました。")
-        });
-    });
-
-    // データベースの表示
-    $("#database-table").ready(function() {
-        $.ajax({
-            url: "api/get-database",
-            dataType: "json",
+            data: {"query": $("#search-box").val()}
 
         }).done(function(data) {
+            if (data.length == 0) {
+                return false;
+            }
             createDatabaseTalbe(data);
-            $("#database-table > table").addClass("table table-bordered").DataTable();
+            $("#database-table > table").addClass("table table-bordered");
         
         }).fail(function() {
-            alert("データベースの取得に失敗しました。")
+            alert("データベースの検索に失敗しました。")
         
         }).always(function() {
             $(".loader").hide();
+            $("#database-table").show();
+            $("#search-box").val("");
         });
     });
 });
 
-function createDatabaseTalbe(data){
-    //テーブルの準備
-    $("#database-table").append("<table><thead></thead><tbody></tbody></table>");
-    $("#database-table > table > thead").append("<tr></tr>");
-    
+function createTableHeader(){
+    $.ajax({
+        url: "api/search-database",
+        dataType: "json",
+        data: {"query": "フシギダネ"}
+    }).done(function(data) {
+        if (data.length == 0) {
+            alert("データテーブルの初期化に失敗しました");
+            return false;
+        };
+        //ヘッダの生成
+        let columns = Object.keys(data[0]);
+        for (let i = 0; i < columns.length; i++){
+            $("#database-table > table > thead > tr").append("<td><div>" + columns[i] + "</div></td>");
+        }
+
+    }).fail(function(data){
+        alert("データテーブルの初期化に失敗しました");
+    });
+};
+
+function createDatabaseTalbe(data){   
     //ヘッダの生成
     let columns = Object.keys(data[0]);
-    // let columns = ["番号", "ポケモン", "タイプ1", "わざ1", "もちもの", "せいかく"]
-    for (let i = 0; i < columns.length; i++){
-        $("#database-table > table > thead > tr").append("<td><div>" + columns[i] + "</div></td>");
-    }
-    
+        
     //コンテンツの生成
     for (let i = 0; i < data.length; i++){
         $("#database-table > table > tbody").append("<tr></tr>");

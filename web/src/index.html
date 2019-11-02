@@ -14,10 +14,18 @@
     <body>
     <div class="container-fluid">
         <h1 class="mt-4">バトルファクトリー検索DB</h1>
-        
+        <div class="form-group">
+            <input class="form-control" id="search-box" placeholder="検索対象ポケモン名を入力。(例: ラプラス)">
+        </div>
+        <div class="loader"></div>
+        <div id="database-table">
+            <table class="table table-bordered">
+                <thead><tr></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
-    <div class="loader"></div>
-    <div id="database-table"></div>
+    
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>

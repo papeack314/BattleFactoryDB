@@ -11,19 +11,15 @@ models_df = pd.read_csv("app/data/factory_model.csv")
 def sayHello():
     return "Hello! API server is running.\n"
 
-@app.route('/search')
-def searchPokemon():
+@app.route('/search-database')
+def searchDatabase():
     query = request.args.get("query")
-    return jsonify({
-        "query": query
-    })
-
-@app.route('/get-database')
-def getDatabase():
-    database_json = models_df.to_json(orient="records",force_ascii=False)
+    if query == "":
+        return jsonify([])
+    
+    database_json = models_df[models_df["ポケモン"].str.contains(query)].to_json(orient="records",force_ascii=False)
     return database_json
-    # datatable_html = models_df.to_html(index=False, escape=False).replace("NaN", "")
-    # return datatable_html
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)

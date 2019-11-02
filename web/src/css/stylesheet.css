@@ -55,6 +55,10 @@ textarea {
   zoom: 50%;
 }
 
+.loader {
+  display: none;
+}
+
 /* 以下属性の表記用 */
 .types {
   color: #fff;
@@ -82,7 +86,7 @@ textarea {
 .electric {
   background:#F8D030; border: 1px solid #A1871F
 }
-.pshychic {
+.psychic {
   background:#F85888; border: 1px solid #A13959
 }
 .ice {
