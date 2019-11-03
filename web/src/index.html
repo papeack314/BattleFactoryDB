@@ -15,7 +15,7 @@
     <div class="container-fluid">
         <h1 class="mt-4">バトルファクトリー検索DB</h1>
         <div class="form-group">
-            <input class="form-control" id="search-box" placeholder="検索対象ポケモン名を入力。(例: ラプラス)">
+            <input class="form-control" id="search-box" placeholder="検索対象のポケモン名を入力。(例: ラプラス)">
         </div>
         <div class="loader"></div>
         <div id="database-table">
@@ -24,7 +24,33 @@
                 <tbody></tbody>
             </table>
         </div>
+
+        <!-- モーダルの設定 -->
+        <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="detail-modal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">ポケモン名：<span id="modal-name"></span></h4>
+            </div>
+            <div class="modal-body">
+                <p>タイプ：<span id="modal-type1"></span><span id="modal-type2"></span></p>
+                <p>わざ構成：
+                    <span id="modal-move1"></span><span id="modal-move2"></span><span id="modal-move3"></span><span id="modal-move4"></span></p>
+                <p>もちもの：<span id="modal-item"></span></p>
+                <p>育成型：<span id="modal-nature"></span><span id="modal-effort-values"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+            </div><!-- /.modal-footer -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+
+
     </div>
+
     
 
 

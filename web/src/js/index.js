@@ -83,12 +83,49 @@ function createDatabaseTalbe(data){
                 continue;
             };
 
-            $("#database-table > table > tbody tr:last-of-type").append("<td><div>" + data[i][columns[j]] + "</div></td>");
+            //番号の列はモーダルウィンドウを開くためのボタンにする
+            if (columns[j] == "番号"){
+                $("#database-table > table > tbody tr:last-of-type").append(
+                '<td><div class="center"><button type="button" class="btn btn-default detail-button" data-toggle="modal" data-target="#detail-modal">' + data[i][columns[j]] + '</div></button></td>');
+            }
+            else{
+                $("#database-table > table > tbody tr:last-of-type").append("<td><div>" + data[i][columns[j]] + "</div></td>");
+            }
             //タイプのクラスを付与
             if ((columns[j] == "タイプ1" || columns[j] == "タイプ2")){
                 $("#database-table > table > tbody tr:last-of-type > td:last-of-type div").addClass("types " + TypeName[data[i][columns[j]]]);
             }
         }
-
     }
+    $(".detail-button").click(function(){
+        $.ajax({
+            url: "api/get-detail-info",
+            dataType: "json",
+            data: {"bfid": $(this).text()}
+        
+        }).done(function(data) {
+            console.log(data);
+            let name = data["name"];
+            let types = data["types"];
+            let moves = data["moves"];
+            let item = data["item"];
+            let nature = data["nature"];
+            let effort_values = data["effort-values"];
+
+            $("#modal-name").text(name);
+            $("#modal-type1").text(types[0]).removeAttr("class").addClass("types " + TypeName[types[0]]);
+            if (types[1] != "") {
+                $("#modal-type2").text(types[1]).addClass("types " + TypeName[types[1]]);
+            }
+            for (let i = 0; i < moves.length; i++){
+                $("#modal-move" + (i + 1)).text(moves[i]);
+            }
+            $("#modal-item").text(item);
+            $("#modal-nature").text(nature);
+            $("#modal-effort-values").text(effort_values);
+        
+        }).fail(function(){
+            alert("詳細情報の取得に失敗しました。");
+        });
+    });
 }

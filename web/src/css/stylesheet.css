@@ -59,6 +59,14 @@ textarea {
   display: none;
 }
 
+td .center {
+  text-align: center;
+}
+
+.modal-body span {
+  margin-right: 5px;
+}
+
 /* 以下属性の表記用 */
 .types {
   color: #fff;
