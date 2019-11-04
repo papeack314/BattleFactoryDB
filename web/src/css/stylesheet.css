@@ -67,6 +67,10 @@ td .center {
   margin-right: 5px;
 }
 
+#n-rounds {
+  width: 50px;
+}
+
 /* 以下属性の表記用 */
 .types {
   color: #fff;

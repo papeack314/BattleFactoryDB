@@ -101,7 +101,8 @@ function createDatabaseTalbe(data){
         $.ajax({
             url: "api/get-detail-info",
             dataType: "json",
-            data: {"bfid": $(this).text()}
+            data: {"bfid": $(this).text()},
+            traditional: true,
         
         }).done(function(data) {
             console.log(data);
@@ -111,6 +112,18 @@ function createDatabaseTalbe(data){
             let item = data["item"];
             let nature = data["nature"];
             let effort_values = data["effort-values"];
+
+            let effort_values_target = effort_values.split("/");
+            let effort_values_array = {};
+            if (effort_values_target.length == 2) {
+                var effort_values_num = 255;
+            }else {
+                var effort_values_num = 170;
+            }
+            for(let i = 0; i < effort_values_target.length; i++){
+                effort_values_array[effort_values_target] = effort_values_num;
+            }
+
 
             $("#modal-name").text(name);
             $("#modal-type1").text(types[0]).removeAttr("class").addClass("types " + TypeName[types[0]]);
@@ -123,6 +136,25 @@ function createDatabaseTalbe(data){
             $("#modal-item").text(item);
             $("#modal-nature").text(nature);
             $("#modal-effort-values").text(effort_values);
+
+            $.ajax({
+                url: "api/calc-values",
+                dataType: "json",
+                data: {
+                    "name": name,
+                    "nature": nature,
+                    "effort-values": JSON.stringify(effort_values_array),
+                    // "individual-values": $("#n-rounds").val()
+                    "individual-values": 31
+                },
+            }).done(function(data){
+                $("#values-table > tbody > tr").append("<td>" + data["HP"] + "</td>");
+                $("#values-table > tbody > tr").append("<td>" + data["攻撃"] + "</td>");
+                $("#values-table > tbody > tr").append("<td>" + data["防御"] + "</td>");
+                $("#values-table > tbody > tr").append("<td>" + data["特攻"] + "</td>");
+                $("#values-table > tbody > tr").append("<td>" + data["特防"] + "</td>");
+                $("#values-table > tbody > tr").append("<td>" + data["素早さ"] + "</td>");
+            });
         
         }).fail(function(){
             alert("詳細情報の取得に失敗しました。");
